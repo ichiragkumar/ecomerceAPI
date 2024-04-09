@@ -12,7 +12,7 @@ app.get("/", (req, res)=>{
 })
 
 
-app.use("/api/products", products_routes)
+app.use("/api/v1/products", products_routes)
 
 
 
