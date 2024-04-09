@@ -1,15 +1,33 @@
 const Product = require("../models/product")
+
+
 const  getAllPrducts = async (req, res) => {
-    res.json({msg: "all products"})
+    try {
+        const products = await Product.find({products});
+        // const products = await Product.find({name: "watch"});
+        res.status(200).json(products);
+        } catch (error){
+            res.status(500).json(
+                { error: 'Internal server error' }
+        );
+    }
+    
 } 
 
 const getAllPrductsTesting = async (req, res)=>{
-    res.json({msg: "all products"})
+    try {
+        const products = await Product.find();
+        res.status(200).json({products});
+        } catch (error){
+            res.status(500).json(
+                { error: 'Internal server error' }
+        );
+    }
 
 };
 
 const createProduct = async (req, res)=>{
-    console.log("i am here ... ");
+    console.log("i  will create a new product in Database ");
 
     await Product.create({
         name: req.body.name,
