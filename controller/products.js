@@ -17,17 +17,31 @@ const  getAllPrducts = async (req, res) => {
 
 const getAllPrductsTesting = async (req, res)=>{
     try {
-
-        // if any part of query parameters is true , then show their result
-        const {company} = req.query
+        const {company, name} = req.query
         const queryObject = {}
-
         if(company){
-            queryObject.company = company
-            console.log(queryObject.company)
+               queryObject.company = company
+               console.log(queryObject.company)
         }
-
+        if(name){
+            queryObject.name = name
+            console.log(queryObject.name)
+        }
+        console.log(queryObject);
         const products = await Product.find(queryObject);
+
+
+
+        // // if any part of query parameters is true , then show their result
+        // const {company} = req.query
+        // const queryObject = {}
+
+        // if(company){
+        //     queryObject.company = company
+        //     console.log(queryObject.company)
+        // }
+
+        // const products = await Product.find(queryObject);
 
 
 
