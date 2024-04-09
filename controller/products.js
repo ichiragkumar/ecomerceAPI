@@ -17,6 +17,7 @@ const  getAllPrducts = async (req, res) => {
 
 const getAllPrductsTesting = async (req, res)=>{
     try {
+
         const {company, name} = req.query
         const queryObject = {}
         if(company){
@@ -24,11 +25,23 @@ const getAllPrductsTesting = async (req, res)=>{
                console.log(queryObject.company)
         }
         if(name){
-            queryObject.name = name
+            queryObject.name = {$regex :  name, $options: "i"}
             console.log(queryObject.name)
         }
         console.log(queryObject);
         const products = await Product.find(queryObject);
+        // const {company, name} = req.query
+        // const queryObject = {}
+        // if(company){
+        //        queryObject.company = company
+        //        console.log(queryObject.company)
+        // }
+        // if(name){
+        //     queryObject.name = name
+        //     console.log(queryObject.name)
+        // }
+        // console.log(queryObject);
+        // const products = await Product.find(queryObject);
 
 
 
