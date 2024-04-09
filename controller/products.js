@@ -18,18 +18,26 @@ const  getAllPrducts = async (req, res) => {
 const getAllPrductsTesting = async (req, res)=>{
     try {
 
-        const {company, name} = req.query
-        const queryObject = {}
-        if(company){
-               queryObject.company = company
-               console.log(queryObject.company)
-        }
-        if(name){
-            queryObject.name = {$regex :  name, $options: "i"}
-            console.log(queryObject.name)
-        }
-        console.log(queryObject);
-        const products = await Product.find(queryObject);
+        const products = await Product.find().sort("price");
+        // gerneral search
+        // const {company, name} = req.query
+        // const queryObject = {}
+        // if(company){
+        //        queryObject.company = company
+        //        console.log(queryObject.company)
+        // }
+        // if(name){
+        //     queryObject.name = {$regex :  name, $options: "i"}
+        //     console.log(queryObject.name)
+        // }
+        // console.log(queryObject);
+        // const products = await Product.find(queryObject);
+
+
+
+
+
+        // search both end and if whatever it's true 
         // const {company, name} = req.query
         // const queryObject = {}
         // if(company){
@@ -45,6 +53,7 @@ const getAllPrductsTesting = async (req, res)=>{
 
 
 
+
         // // if any part of query parameters is true , then show their result
         // const {company} = req.query
         // const queryObject = {}
@@ -57,7 +66,7 @@ const getAllPrductsTesting = async (req, res)=>{
         // const products = await Product.find(queryObject);
 
 
-
+        // search through query parameter
         // const search = req.query
         // const products = await Product.find(search);
         
