@@ -339,6 +339,8 @@ const createProduct = async (req, res)=>{
 
 
 
+## See the Database Log
+![alt text](image.png)
 # Read Data from Database using Express & Mongoose
 
 
