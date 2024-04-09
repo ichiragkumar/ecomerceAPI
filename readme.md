@@ -92,12 +92,12 @@ app.use("/api/products", products_routes)
 
 ---
 
-# Testing API using Postman & Thunderbolt
+# step 3: Testing API using Postman & Thunderbolt
 
 
 ![image.png](https://eraser.imgix.net/workspaces/uNGytFAPwNFoO4oofd5F/xkbjZoDlG9bq9Tehow39DTjm0ff2/H6EKlTIYWosJOynD5j_4x.png?ixlib=js-3.7.0 "image.png")
 
-# Introduction to MongoDB & Mongoose || Connect Backend to Database
+# step 4: Introduction to MongoDB & Mongoose || Connect Backend to Database
 
 
 **Create a  Folder DB**
@@ -140,7 +140,7 @@ connectDB() }
 
 
 
-#  Secure Your Personal Data with DOTENV
+#  step 5: Secure Your Personal Data with DOTENV
 ```
 npm i mongoose
 ```
@@ -165,7 +165,7 @@ DATABASE_URL = mongoose://something:/string/url/appname
 ```
 process.env.DATABASE_URL
 ```
-# Create Schema & Model (Collection & Tables) using Mongoose & Express JS
+# step 6 : Create Schema & Model (Collection & Tables) using Mongoose & Express JS
 
 
 1. create a model folder > product.js
@@ -308,7 +308,7 @@ app.listen(process.env.PORT , async ()=>{
 ```
 
 
-# **After learning these and alll**
+# **step 7 : After learning these and alll**
 
 
 **create a new route **
@@ -339,10 +339,289 @@ const createProduct = async (req, res)=>{
 
 
 
-## See the Database Log
-![alt text](image.png)
-# Read Data from Database using Express & Mongoose
+# step 8: Read Data from the Database using Express & Mongoose
 
+
+Get all the data from database
+
+```
+const Product = require("../models/product")
+
+const  getAllPrducts = async (req, res) => {
+try {
+  
+    // here all products comes as response
+    const products = await Product.find({products});
+    
+    // H**ere only those products with name : "watch"**
+    // const products = await Product.find({name: "watch"});
+    // res.status(200).json({products});  if we return as json object
+    //  then this variable will expand all products
+    
+    res.status(200).json(products);
+    } catch (error){
+        res.status(500).json(
+            { error: 'Internal server error' }
+    );
+}
+
+}
+```
+
+
+# step 9: Add Filtration & Searching Functionality with Query Props
+
+
+```
+const getAllPrductsTesting = async (req, res)=>{
+    try {
+        // storing the query parameter in variable and searching
+        // can search in any way  [﻿
+        // localhost:5000/api/v1/products/productstesting?name=iphone
+        // localhost:5000/api/v1/products/productstesting?company=iphone
+        
+        
+        
+        
+        // Add more searches
+        // http://localhost:5000/api/v1/products/productstesting?company=apple&name=watch10](http://localhost:5000/api/v1/products/productstesting?name=iphone)
+        
+        const search = req.query
+        const products = await Product.find(search);
+        res.status(200).json({products});
+        } catch (error){
+            res.status(500).json(
+                { error: 'Internal server error' }
+        );
+    }
+};
+```
+
+
+# step 10: Add Company Filter in API & Make API Work Better
+Here if the first query parameter is OK, then the response will show the first part
+
+```
+localhost:5000/api/v1/products/productstesting?company=apple&adf=sdf
+localhost:5000/api/v1/products/productstesting?adf=sdf&company=apple
+```
+
+
+![image.png](https://eraser.imgix.net/workspaces/uNGytFAPwNFoO4oofd5F/xkbjZoDlG9bq9Tehow39DTjm0ff2/mwnDI2DvPGNQZGLyiYeAJ.png?ixlib=js-3.7.0 "image.png")
+
+
+
+
+
+
+
+
+
+![image.png](https://eraser.imgix.net/workspaces/uNGytFAPwNFoO4oofd5F/xkbjZoDlG9bq9Tehow39DTjm0ff2/sw14cVmWQdOwUx7sK_t8b.png?ixlib=js-3.7.0 "image.png")
+
+
+
+```
+const getAllPrductsTesting = async (req, res)=>{
+    try {
+        // if any part of query parameters is true , then show their result
+        const {company} = req.query
+        const queryObject = {}
+        if(company){
+            queryObject.company = company
+            // just to log the value : apple
+            console.log(queryObject.company)
+        }
+        const products = await Product.find(queryObject);
+ 
+        res.status(200).json({products});
+        } catch (error){
+            res.status(500).json(
+                { error: 'Internal server error' }
+        );
+    }
+};
+```
+# step 11: Add Advanced Search Functionality with both ends
+```
+const getAllPrductsTesting = async (req, res)=>{
+    try {
+        const {company, name} = req.query
+        const queryObject = {}
+        if(company){
+               queryObject.company = company
+               console.log(queryObject.company)
+        }
+        if(name){
+            queryObject.name = name
+            console.log(queryObject.name)
+        }
+        
+        // or
+        if(company && name){
+          queryObject.company = company
+          queryObject.company = company
+          console.log(queryObject.company)
+          console.log(queryObject.company)
+        }
+         
+}
+        console.log(queryObject);
+        const products = await Product.find(queryObject);
+
+        
+        res.status(200).json({products});
+        } catch (error){
+            res.status(500).json(
+                { error: 'Internal server error' }
+        );
+    }
+};
+```
+![image.png](https://eraser.imgix.net/workspaces/uNGytFAPwNFoO4oofd5F/xkbjZoDlG9bq9Tehow39DTjm0ff2/QiuBJPWG-c1Dt6DaDYnNQ.png?ixlib=js-3.7.0 "image.png")
+
+
+
+# step 12: regex in MongoDB
+MongoDB offers an improved full-text search solution
+
+`**$regex**` 
+
+Provides regular expression capabilities for pattern-matching _strings_ in queries.
+
+
+
+```
+const getAllPrductsTesting = async (req, res)=>{
+try {
+
+    const {company, name} = req.query
+    const queryObject = {}
+    if(company){
+           queryObject.company = company
+           console.log(queryObject.company)
+    }
+    if(name){
+      
+       // here we can serach generalize : **not very strictly **
+        queryObject.name = {$regex :  name, $options: "i"}
+        console.log(queryObject.name)
+    }
+    console.log(queryObject);
+    const products = await Product.find(queryObject);
+    res.status(200).json({products});
+        } catch (error){
+            res.status(500).json(
+                { error: 'Internal server error' }
+        );
+    }
+};
+```
+# step 13 : Add SORT functionality 
+```
+ const products = await Product.find().sort("name"); // asending
+ const products = await Product.find().sort("-name"); // descending
+ 
+// sort two things together
+let apiData = Product.find(queryObject);
+
+if (sort) {
+  let sortFix = sort.split(",").join(" ");
+  apiData = apiData.sort(sortFix);
+}
+ 
+ 
+```
+```
+const getAllPrductsTesting = async (req, res)=>{
+try {
+
+    const products = await Product.find().sort("-name");
+    res.status(200).json({products});
+        } catch (error){
+            res.status(500).json(
+                { error: 'Internal server error' }
+        );
+    }
+};
+```
+![image.png](https://eraser.imgix.net/workspaces/uNGytFAPwNFoO4oofd5F/xkbjZoDlG9bq9Tehow39DTjm0ff2/Be12IQJeItXakEsf1mUoU.png?ixlib=js-3.7.0 "image.png")
+
+
+
+# step 14: Return Specific Document Fields using SELECT in Mongoose
+
+
+only selected fields will be getting as response
+
+```
+const getAllPrductsTesting = async (req, res)=>{
+   
+    try {
+        // return only selected field
+        const { company, name, featured, sort, select } = req.query;
+        const queryObject = {}
+        let apiData = Product.find(queryObject);
+        // (select = name company);
+        if (select) {
+          let selectFix = select.replace(",", " ");
+        //   let selectFix = select.split(",").join(" ");
+          apiData = apiData.select(selectFix);
+        }
+        console.log(queryObject);
+        const myData = await apiData
+        res.status(200).json({myData})
+        } catch (error){
+            res.status(500).json(
+                { error: 'Internal server error' }
+        );
+    }
+};
+```
+![image.png](https://eraser.imgix.net/workspaces/uNGytFAPwNFoO4oofd5F/xkbjZoDlG9bq9Tehow39DTjm0ff2/At836NGtZBM262vbwBeWn.png?ixlib=js-3.7.0 "image.png")
+
+
+
+![image.png](https://eraser.imgix.net/workspaces/uNGytFAPwNFoO4oofd5F/xkbjZoDlG9bq9Tehow39DTjm0ff2/9RCcMs97BM5ygZKpe1hYh.png?ixlib=js-3.7.0 "image.png")
+
+![image.png](https://eraser.imgix.net/workspaces/uNGytFAPwNFoO4oofd5F/xkbjZoDlG9bq9Tehow39DTjm0ff2/5Gdo5d2_z7JoEEHc_TzyH.png?ixlib=js-3.7.0 "image.png")
+
+# step 15: Add Pagination in Rest API using Node & Mongoose
+
+
+```
+
+const getAllPrductsTesting = async (req, res)=>{
+   
+    try {
+// return only selected field 
+        const { company, name, featured, sort, select,price } = req.query;
+        const queryObject = {}
+        let apiData = Product.find(queryObject);
+        
+        
+        let page = Number(req.query.page) || 1
+        let limit = Number(req.query.limit) || 3
+        let skip = (page -1) * limit
+        apiData = apiData.skip(skip).limit(limit)
+        
+        
+        
+        console.log(queryObject);
+        const myData = await apiData
+        res.status(200).json({myData, nbHits: myData.length})
+        } catch (error){
+            res.status(500).json(
+                { error: 'Internal server error' }
+        );
+    }
+};
+```
+![image.png](https://eraser.imgix.net/workspaces/uNGytFAPwNFoO4oofd5F/xkbjZoDlG9bq9Tehow39DTjm0ff2/ZMNW8CRl3VRxEgyFsd5DW.png?ixlib=js-3.7.0 "image.png")
+
+
+
+![image.png](https://eraser.imgix.net/workspaces/uNGytFAPwNFoO4oofd5F/xkbjZoDlG9bq9Tehow39DTjm0ff2/v4dOIIaPT9hKUyB0OFOIL.png?ixlib=js-3.7.0 "image.png")
 
 
 
