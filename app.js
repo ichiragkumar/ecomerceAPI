@@ -1,6 +1,11 @@
+require("dotenv").config()
+
 const express = require("express")
 const app = express()
 
+
+
+const connectDB = require("./db/connect")
 const PORT = process.env.PORT || 3000
 
 const products_routes = require("./routes/products")
@@ -17,6 +22,7 @@ app.use("/api/v1/products", products_routes)
 
 
 app.listen(PORT, ()=>{
+    connectDB(process.env.DATABASE_URL)
     console.log("     ");
     console.log("     ");
     console.log("     ");

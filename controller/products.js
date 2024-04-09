@@ -5,7 +5,6 @@ const  getAllPrducts = async (req, res) => {
 const getAllPrductsTesting = async (req, res)=>{
     res.json({msg: "all products"})
 
-
 };
 
 module.exports = {
