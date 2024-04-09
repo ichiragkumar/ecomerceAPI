@@ -3,12 +3,22 @@ const app = express()
 
 const PORT = process.env.PORT || 3000
 
-app.get("/", (req,res)=>{
-    res.send("Welcome to Ecomerce API")
+const products_routes = require("./routes/products")
+
+
+
+app.get("/", (req, res)=>{
+    res.status(200).send("<h2>welocome my son</h2>")
 })
+
+
+app.use("/api/products", products_routes)
 
 
 
 app.listen(PORT, ()=>{
+    console.log("     ");
+    console.log("     ");
+    console.log("     ");
     console.log(`server is runnning at http://localhost:${PORT}`);
 })
