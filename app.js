@@ -3,6 +3,9 @@ require("dotenv").config()
 const express = require("express")
 const app = express()
 
+// hwo to use req body and add product to database
+app.use(express.json())
+
 
 
 const connectDB = require("./db/connect")
